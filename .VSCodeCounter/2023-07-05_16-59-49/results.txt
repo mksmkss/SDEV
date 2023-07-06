@@ -1,0 +1,85 @@
+Date : 2023-07-05 16:59:49
+Directory : /Users/masataka/Coding/React/imse
+Total : 34 files,  20925 codes, 76 comments, 158 blanks, all 21159 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |          5 |     19,642 |          0 |          3 |     19,645 |
+| JavaScript         |         20 |      1,069 |         47 |         99 |      1,215 |
+| Python             |          2 |         89 |          5 |         13 |        107 |
+| CSS                |          2 |         46 |          0 |          8 |         54 |
+| Markdown           |          1 |         38 |          0 |         33 |         71 |
+| HTML               |          1 |         20 |         23 |          1 |         44 |
+| JSON with Comments |          1 |         17 |          1 |          1 |         19 |
+| SQL                |          1 |          3 |          0 |          0 |          3 |
+| XML                |          1 |          1 |          0 |          0 |          1 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                   |         34 |     20,925 |         76 |        158 |     21,159 |
+| . (Files)                                                           |          4 |     19,668 |          1 |         36 |     19,705 |
+| public                                                              |          2 |         45 |         23 |          2 |         70 |
+| src                                                                 |         28 |      1,212 |         52 |        120 |      1,384 |
+| src (Files)                                                         |          8 |        125 |          9 |         22 |        156 |
+| src/backend                                                         |          4 |         93 |          5 |         13 |        111 |
+| src/components                                                      |          4 |        449 |          9 |         30 |        488 |
+| src/components/Drawer                                               |          1 |         89 |          1 |          5 |         95 |
+| src/components/Header                                               |          2 |        242 |          8 |         21 |        271 |
+| src/components/config                                               |          1 |        118 |          0 |          4 |        122 |
+| src/database                                                        |          3 |          7 |          0 |          4 |         11 |
+| src/nav                                                             |          9 |        538 |         29 |         51 |        618 |
+| src/nav/Default                                                     |          1 |         35 |          3 |          6 |         44 |
+| src/nav/EditDB                                                      |          1 |         21 |          1 |          4 |         26 |
+| src/nav/Home                                                        |          1 |         30 |          2 |          4 |         36 |
+| src/nav/Login                                                       |          2 |        191 |         10 |         13 |        214 |
+| src/nav/NotFound                                                    |          1 |         19 |          1 |          4 |         24 |
+| src/nav/Search                                                      |          1 |         19 |          1 |          4 |         24 |
+| src/nav/Settings                                                    |          1 |         19 |          1 |          4 |         24 |
+| src/nav/Signup                                                      |          1 |        204 |         10 |         12 |        226 |
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                            | language           | code       | comment    | blank      | total      |
++---------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| /Users/masataka/Coding/React/imse/.eslintrc.json                    | JSON with Comments |         17 |          1 |          1 |         19 |
+| /Users/masataka/Coding/React/imse/README.md                         | Markdown           |         38 |          0 |         33 |         71 |
+| /Users/masataka/Coding/React/imse/package-lock.json                 | JSON               |     19,533 |          0 |          1 |     19,534 |
+| /Users/masataka/Coding/React/imse/package.json                      | JSON               |         80 |          0 |          1 |         81 |
+| /Users/masataka/Coding/React/imse/public/index.html                 | HTML               |         20 |         23 |          1 |         44 |
+| /Users/masataka/Coding/React/imse/public/manifest.json              | JSON               |         25 |          0 |          1 |         26 |
+| /Users/masataka/Coding/React/imse/src/App.css                       | CSS                |         33 |          0 |          6 |         39 |
+| /Users/masataka/Coding/React/imse/src/App.js                        | JavaScript         |         28 |          2 |          5 |         35 |
+| /Users/masataka/Coding/React/imse/src/Routers.js                    | JavaScript         |         23 |          0 |          3 |         26 |
+| /Users/masataka/Coding/React/imse/src/backend/server.py             | Python             |         84 |          5 |         13 |        102 |
+| /Users/masataka/Coding/React/imse/src/backend/server_url.json       | JSON               |          1 |          0 |          0 |          1 |
+| /Users/masataka/Coding/React/imse/src/backend/tempCodeRunnerFile.py | Python             |          5 |          0 |          0 |          5 |
+| /Users/masataka/Coding/React/imse/src/backend/users.db              | SQL                |          3 |          0 |          0 |          3 |
+| /Users/masataka/Coding/React/imse/src/components/Drawer/Drawer.js   | JavaScript         |         89 |          1 |          5 |         95 |
+| /Users/masataka/Coding/React/imse/src/components/Header/Header.js   | JavaScript         |         81 |          4 |          7 |         92 |
+| /Users/masataka/Coding/React/imse/src/components/Header/Menu.js     | JavaScript         |        161 |          4 |         14 |        179 |
+| /Users/masataka/Coding/React/imse/src/components/config/Color.js    | JavaScript         |        118 |          0 |          4 |        122 |
+| /Users/masataka/Coding/React/imse/src/database/functions.js         | JavaScript         |          0 |          0 |          1 |          1 |
+| /Users/masataka/Coding/React/imse/src/database/user.js              | JavaScript         |          4 |          0 |          3 |          7 |
+| /Users/masataka/Coding/React/imse/src/database/user.json            | JSON               |          3 |          0 |          0 |          3 |
+| /Users/masataka/Coding/React/imse/src/index.css                     | CSS                |         13 |          0 |          2 |         15 |
+| /Users/masataka/Coding/React/imse/src/index.js                      | JavaScript         |         12 |          3 |          3 |         18 |
+| /Users/masataka/Coding/React/imse/src/logo.svg                      | XML                |          1 |          0 |          0 |          1 |
+| /Users/masataka/Coding/React/imse/src/nav/Default/Default.js        | JavaScript         |         35 |          3 |          6 |         44 |
+| /Users/masataka/Coding/React/imse/src/nav/EditDB/EditDB.js          | JavaScript         |         21 |          1 |          4 |         26 |
+| /Users/masataka/Coding/React/imse/src/nav/Home/Home.js              | JavaScript         |         30 |          2 |          4 |         36 |
+| /Users/masataka/Coding/React/imse/src/nav/Login/Login.js            | JavaScript         |        191 |         10 |         12 |        213 |
+| /Users/masataka/Coding/React/imse/src/nav/Login/functions.js        | JavaScript         |          0 |          0 |          1 |          1 |
+| /Users/masataka/Coding/React/imse/src/nav/NotFound/NotFound.js      | JavaScript         |         19 |          1 |          4 |         24 |
+| /Users/masataka/Coding/React/imse/src/nav/Search/Search.js          | JavaScript         |         19 |          1 |          4 |         24 |
+| /Users/masataka/Coding/React/imse/src/nav/Settings/Settings.js      | JavaScript         |         19 |          1 |          4 |         24 |
+| /Users/masataka/Coding/React/imse/src/nav/Signup/Signup.js          | JavaScript         |        204 |         10 |         12 |        226 |
+| /Users/masataka/Coding/React/imse/src/reportWebVitals.js            | JavaScript         |         14 |          0 |          2 |         16 |
+| /Users/masataka/Coding/React/imse/src/setupTests.js                 | JavaScript         |          1 |          4 |          1 |          6 |
+| Total                                                               |                    |     20,925 |         76 |        158 |     21,159 |
++---------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

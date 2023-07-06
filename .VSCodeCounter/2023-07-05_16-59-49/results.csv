@@ -1,0 +1,36 @@
+"filename", "language", "JavaScript", "XML", "CSS", "JSON with Comments", "JSON", "Markdown", "SQL", "Python", "HTML", "comment", "blank", "total"
+"/Users/masataka/Coding/React/imse/.eslintrc.json", "JSON with Comments", 0, 0, 0, 17, 0, 0, 0, 0, 0, 1, 1, 19
+"/Users/masataka/Coding/React/imse/README.md", "Markdown", 0, 0, 0, 0, 0, 38, 0, 0, 0, 0, 33, 71
+"/Users/masataka/Coding/React/imse/package-lock.json", "JSON", 0, 0, 0, 0, 19533, 0, 0, 0, 0, 0, 1, 19534
+"/Users/masataka/Coding/React/imse/package.json", "JSON", 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 1, 81
+"/Users/masataka/Coding/React/imse/public/index.html", "HTML", 0, 0, 0, 0, 0, 0, 0, 0, 20, 23, 1, 44
+"/Users/masataka/Coding/React/imse/public/manifest.json", "JSON", 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 1, 26
+"/Users/masataka/Coding/React/imse/src/App.css", "CSS", 0, 0, 33, 0, 0, 0, 0, 0, 0, 0, 6, 39
+"/Users/masataka/Coding/React/imse/src/App.js", "JavaScript", 28, 0, 0, 0, 0, 0, 0, 0, 0, 2, 5, 35
+"/Users/masataka/Coding/React/imse/src/Routers.js", "JavaScript", 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 26
+"/Users/masataka/Coding/React/imse/src/backend/server.py", "Python", 0, 0, 0, 0, 0, 0, 0, 84, 0, 5, 13, 102
+"/Users/masataka/Coding/React/imse/src/backend/server_url.json", "JSON", 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1
+"/Users/masataka/Coding/React/imse/src/backend/tempCodeRunnerFile.py", "Python", 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 5
+"/Users/masataka/Coding/React/imse/src/backend/users.db", "SQL", 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3
+"/Users/masataka/Coding/React/imse/src/components/Drawer/Drawer.js", "JavaScript", 89, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 95
+"/Users/masataka/Coding/React/imse/src/components/Header/Header.js", "JavaScript", 81, 0, 0, 0, 0, 0, 0, 0, 0, 4, 7, 92
+"/Users/masataka/Coding/React/imse/src/components/Header/Menu.js", "JavaScript", 161, 0, 0, 0, 0, 0, 0, 0, 0, 4, 14, 179
+"/Users/masataka/Coding/React/imse/src/components/config/Color.js", "JavaScript", 118, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 122
+"/Users/masataka/Coding/React/imse/src/database/functions.js", "JavaScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"/Users/masataka/Coding/React/imse/src/database/user.js", "JavaScript", 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 7
+"/Users/masataka/Coding/React/imse/src/database/user.json", "JSON", 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 3
+"/Users/masataka/Coding/React/imse/src/index.css", "CSS", 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 2, 15
+"/Users/masataka/Coding/React/imse/src/index.js", "JavaScript", 12, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 18
+"/Users/masataka/Coding/React/imse/src/logo.svg", "XML", 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/Users/masataka/Coding/React/imse/src/nav/Default/Default.js", "JavaScript", 35, 0, 0, 0, 0, 0, 0, 0, 0, 3, 6, 44
+"/Users/masataka/Coding/React/imse/src/nav/EditDB/EditDB.js", "JavaScript", 21, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 26
+"/Users/masataka/Coding/React/imse/src/nav/Home/Home.js", "JavaScript", 30, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 36
+"/Users/masataka/Coding/React/imse/src/nav/Login/Login.js", "JavaScript", 191, 0, 0, 0, 0, 0, 0, 0, 0, 10, 12, 213
+"/Users/masataka/Coding/React/imse/src/nav/Login/functions.js", "JavaScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"/Users/masataka/Coding/React/imse/src/nav/NotFound/NotFound.js", "JavaScript", 19, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 24
+"/Users/masataka/Coding/React/imse/src/nav/Search/Search.js", "JavaScript", 19, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 24
+"/Users/masataka/Coding/React/imse/src/nav/Settings/Settings.js", "JavaScript", 19, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 24
+"/Users/masataka/Coding/React/imse/src/nav/Signup/Signup.js", "JavaScript", 204, 0, 0, 0, 0, 0, 0, 0, 0, 10, 12, 226
+"/Users/masataka/Coding/React/imse/src/reportWebVitals.js", "JavaScript", 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 16
+"/Users/masataka/Coding/React/imse/src/setupTests.js", "JavaScript", 1, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, 6
+"Total", "-", 1069, 1, 46, 17, 19642, 38, 3, 89, 20, 76, 158, 21159
