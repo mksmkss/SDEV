@@ -7,7 +7,7 @@ import {
   FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Card,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { isLogin } from '../../database/user';
+import { isLogin } from '../../components/config/user';
 import Header from '../../components/Header/Header';
 import Color from '../../components/config/Color';
 import server from '../../backend/server_url.json';

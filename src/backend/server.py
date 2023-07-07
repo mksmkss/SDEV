@@ -1,7 +1,9 @@
 import os
 import sys
 import uuid
+import glob
 import socket
+import random
 import sqlite3
 from flask import Flask
 from flask import request, make_response, jsonify
@@ -64,43 +66,94 @@ def signup():
             return make_response(jsonify({"status": "failed"}))
 
 
-@app.route("/api/send", methods=["POST"])
-def register():
-    data = request.get_json()
-    text = data["todo_name"]
-    with sqlite3.connect("products.db") as conn:
-        if text != "":
-            conn.execute(f"INSERT INTO PRODUCTS (name) VALUES('{text}')")
-        result = conn.execute(f"SELECT * FROM PRODUCTS").fetchall()
-    return make_response(jsonify({"result": result}))
+@app.route("/api/sdgsProducts", methods=["GET"])
+def getSdgsProducts():
+    with sqlite3.connect(f"{path}/products.db") as conn:
+        result = conn.execute("SELECT * FROM PRODUCTS WHERE sdgs=?",("True",)).fetchall() 
+        print(result)
+        return make_response(jsonify({"status": "success", "products": result}))
 
 
-@app.route("/api/delete", methods=["POST"])
-def delete():
-    data = request.get_json()
-    delete_ids = data["post_ids"]
-    with sqlite3.connect("products.db") as conn:
-        conn.execute(
-            f"DELETE FROM PRODUCTS WHERE id in ({','.join(map(str, delete_ids))})"
-        )
-        result = conn.execute(f"SELECT * FROM PRODUCTS").fetchall()
+@app.route("/api/randomProducts", methods=["GET"])
+def getRandomProducts():
+    with sqlite3.connect(f"{path}/products.db") as conn:
+        result = conn.execute("SELECT * FROM PRODUCTS ORDER BY RANDOM() LIMIT 4").fetchall()
+        print(result)
+        return make_response(jsonify({"status": "success", "products": result}))
 
-    return make_response(jsonify({"result": result}))
-
-
-def createDB():
+def createUSERDB():
     # データベースファイルの作成
     with sqlite3.connect(f"{path}/users.db") as conn:
         conn.execute(
-            f"CREATE TABLE IF NOT EXISTS USERS (id INTEGER , name STRING,email STRING, password STRING, address STRING)"
+            "CREATE TABLE IF NOT EXISTS USERS (id INTEGER , name STRING,email STRING, password STRING, address STRING)"
         )
+
+
+def createPRODUCTDB():
+    # データベースファイルの作成
+    with sqlite3.connect(f"{path}/products.db") as conn:
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS PRODUCTS (id INTEGER, name STRING, price INTEGER, image STRING, description STRING, size STRING, stock INTEGER, sdgs BOOLEAN)"
+        )
+
+
+def createCARTDB():
+    # データベースファイルの作成
+    with sqlite3.connect(f"{path}/cart.db") as conn:
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS CART (userid INTEGER, productid INTEGER)"
+        )
+
+
+def createREVIEWSDB():
+    # データベースファイルの作成
+    with sqlite3.connect(f"{path}/reviews.db") as conn:
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS REVIEWS (userid INTEGER, productid INTEGER, review STRING, rating INTEGER)"
+        )
+
+
+def addProducts():
+    with sqlite3.connect(f"{path}/products.db") as conn:
+        products = glob.glob("/Users/masataka/Coding/React/imse/public/image/*")
+        for product in products:
+            id = uuid.uuid4()
+            name = product.split("/")[-1].split("_")[0]
+            print(name)
+            price = input("price:")
+            print("\n")
+            image = product.split("/")[-1]
+            print("\n")
+            description = input("description:")
+            print("\n")
+            size = random.choice(["S", "M", "L"])
+            print(f"size:{size}")
+            print("\n")
+            stock = input("stock:")
+            print("\n")
+            sdgs = random.choice([True, False])
+            print(f"sdgs:{sdgs}")
+            conn.execute(
+                f"INSERT INTO PRODUCTS (id,name, price, image, description,size, stock, sdgs) VALUES('{id}','{name}','{price}','{image}','{description}','{size}','{stock}','{sdgs}')"
+            )
+            result = conn.execute(f"SELECT * FROM PRODUCTS").fetchall()
+            print(result)
+            print("Added!")
+            #move to addeed_image
+            os.rename(product, f"/Users/masataka/Coding/React/imse/public/added_image/{image}")
+
 
 
 if __name__ == "__main__":
     os.chdir(os.path.dirname(__file__))
-    ip = socket.gethostbyname_ex(socket.gethostname())
-    print(ip[2][1])
+    ip = socket.gethostbyname_ex(socket.gethostname())[2][1]
+    print(ip)
     with open("server_url.json", "w") as f:
-        f.write(f'{{"url":"{ip[2][1]}"}}')
+        f.write(f'{{"url":"{ip}"}}')
     app.run(debug=True, host="0.0.0.0", port="8000")
-    # createDB()
+
+    # createPRODUCTDB()
+    # createUSERDB()
+    # createCARTDB()
+    # createREVIEWSDB()
+    # addProducts()

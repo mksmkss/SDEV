@@ -1,7 +1,7 @@
 import './App.css';
 import React from 'react';
 import Routers from './Routers';
-import { isLogin, auth } from './database/user';
+import { isLogin, auth } from './components/config/user';
 
 const styles = {
   App: {

@@ -78,7 +78,7 @@ const renderLeftDefault = (props) => {
 
 function Header(props) {
   const {
-    title = 'Wamazon', drawer, setDrawer, isLeft = true, leftElements = renderLeftDefault({ drawer, setDrawer }), isRight = true, rightElements = <MenuComponent />,
+    title = 'Mamazon', drawer, setDrawer, isLeft = true, leftElements = renderLeftDefault({ drawer, setDrawer }), isRight = true, rightElements = <MenuComponent />,
   } = props;
   return (
     <header className="header" style={styles.header_container}>

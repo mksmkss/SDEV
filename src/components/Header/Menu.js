@@ -14,7 +14,7 @@ import Logout from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { isLogin } from '../../database/user';
+import { isLogin } from '../config/user';
 
 const styles = {
   button_continer: {

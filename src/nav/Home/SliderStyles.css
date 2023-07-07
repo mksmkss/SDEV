@@ -1,0 +1,35 @@
+.card {
+  display: flex;
+  flex: 1;
+  background-color: white;
+  border-radius: 20px;
+  text-align: center;
+}
+.slick-slide {
+  margin: 0 10px;
+}
+.slick-list {
+  margin: 0 -10px;
+}
+.img {
+  width: 80%;
+  margin: auto;
+  display: block;
+}
+.sdgs {
+  height: 21px;
+  width: 100px;
+  background-color: #00adef;
+  position: relative;
+  top: 10px;
+  right: auto;
+  justify-content: center;
+  color: white;
+}
+.sdgsNull {
+  height: 20px;
+  width: 100px;
+  position: relative;
+  top: 15px;
+  right: auto;
+}
