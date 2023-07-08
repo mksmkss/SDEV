@@ -81,6 +81,15 @@ def getRandomProducts():
         print(result)
         return make_response(jsonify({"status": "success", "products": result}))
 
+
+@app.route("/api/getProductDetail/<productUuid>", methods=["GET"])
+def getProductDetail(productUuid):
+    with sqlite3.connect(f"{path}/products.db") as conn:
+        result = conn.execute(f"SELECT * FROM PRODUCTS WHERE id=?", (productUuid,)).fetchall()
+        print(result)
+        return make_response(jsonify({"status": "success", "product": result}))
+
+
 def createUSERDB():
     # データベースファイルの作成
     with sqlite3.connect(f"{path}/users.db") as conn:
@@ -146,6 +155,14 @@ def addProducts():
 
 if __name__ == "__main__":
     os.chdir(os.path.dirname(__file__))
+    """ 
+        ip = socket.gethostbyname_ex(socket.gethostname())[2][1]
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+        IndexError: list index out of range
+        とエラーが出た場合は
+        ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
+        に変更してください
+    """
     ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
     print(ip)
     with open("server_url.json", "w") as f:

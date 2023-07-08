@@ -10,6 +10,7 @@ import EditDB from './nav/EditDB/EditDB';
 import Cart from './nav/Cart/Cart';
 import Search from './nav/Search/Search';
 import Settings from './nav/Settings/Settings';
+import Detail from './nav/Detail/Detail';
 
 function Routers() {
   return (
@@ -23,6 +24,8 @@ function Routers() {
         <Route path="*" element={<NotFound />} />
         <Route path="search" element={<Search />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="detail/:uuid" element={<Detail />} />
+        {/* <Route path="detail" element={<Detail />} /> */}
       </Routes>
     </BrowserRouter>
   );

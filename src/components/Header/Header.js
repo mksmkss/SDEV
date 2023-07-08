@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu'; // eslint-disable-line import/no-extraneous-dependencies
 import { IconButton } from '@mui/material';
 import Color from '../config/Color';
@@ -80,10 +81,23 @@ function Header(props) {
   const {
     title = 'Mamazon', drawer, setDrawer, isLeft = true, leftElements = renderLeftDefault({ drawer, setDrawer }), isRight = true, rightElements = <MenuComponent />,
   } = props;
+  const navigate = useNavigate();
   return (
     <header className="header" style={styles.header_container}>
       {isLeft && renderLeft({ elements: leftElements })}
-      <div className="title" style={styles.title_container}>
+      <div
+        className="title"
+        style={styles.title_container}
+        onClick={() => navigate('/')}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+          // Enter or Space で実行
+            navigate('/');
+          }
+        }}
+        role="button"
+        tabIndex={0}
+      >
         <h1 style={{ color: 'white' }}>{title}</h1>
       </div>
       {isRight && renderRight({ elements: rightElements })}
