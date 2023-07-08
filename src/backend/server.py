@@ -146,7 +146,7 @@ def addProducts():
 
 if __name__ == "__main__":
     os.chdir(os.path.dirname(__file__))
-    ip = socket.gethostbyname_ex(socket.gethostname())[2][1]
+    ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
     print(ip)
     with open("server_url.json", "w") as f:
         f.write(f'{{"url":"{ip}"}}')

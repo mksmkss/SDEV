@@ -16,7 +16,6 @@ export default function SimpleSlider(props) {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
-    centerPadding: '160px',
     pauseOnHover: true,
     responsive: [
       {
@@ -47,7 +46,8 @@ export default function SimpleSlider(props) {
           {element[7] === 'True' ? <div className="sdgs">SDGs</div> : <div className="sdgsNull" />}
           <img className="img" src={`http://${url}:3000/added_image/${element[3]}`} alt="sdgs" />
           <h2>{element[1]}</h2>
-          <p>{`¥ ${element[2]} (¥ ${Math.round(element[2] * 1.1)}税込)`}</p>
+          {element[7] === 'True' ? <p style={{ color: '#00adef' }}>{`¥ ${Math.round(element[2] * 0.8)} (¥ ${Math.round(element[2] * 1.1 * 0.8)}税込)`}</p>
+            : <p>{`¥ ${element[2]} (¥ ${Math.round(element[2] * 1.1)}税込)`}</p>}
         </div>
       ))}
     </Slider>

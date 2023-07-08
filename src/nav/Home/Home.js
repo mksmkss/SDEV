@@ -82,21 +82,6 @@ function Home() {
       <RandomComponent
         randomProducts={randomProducts}
       />
-      <Buttons
-        drawer={drawer}
-        setDrawer={setDrawer}
-      />
-    </div>
-  );
-}
-
-function Buttons() {
-  const navigate = useNavigate();
-  return (
-    <div className="buttons">
-      <button onClick={() => navigate('/search')}>Search</button>
-      <button onClick={() => navigate('/login')}>user</button>
-      <button onClick={() => navigate('/EditDB')}>create</button>
     </div>
   );
 }
