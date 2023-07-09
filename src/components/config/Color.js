@@ -24,6 +24,7 @@ const Color = {
   replyblue1: '#344955',
   replyblue2: '#497d91',
   replyblue3: '#6599ab',
+  replyblue4: '#a8c0cf',
   cud: { // color universal design
     red: 'rgb(255,75,0)',
     yellow: 'rgb(255,241,0)',

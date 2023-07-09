@@ -57,10 +57,10 @@ export default function SimpleSlider(props) {
           role="button"
           tabIndex={0}
         >
-          {element[7] === 'True' ? <div className="sdgs">SDGs</div> : <div className="sdgsNull" />}
+          {element[5] === 'True' ? <div className="sdgs">SDGs</div> : <div className="sdgsNull" />}
           <img className="img" src={`http://${url}:3000/added_image/${element[3]}`} alt="sdgs" />
           <div className="productName">{element[1]}</div>
-          {element[7] === 'True' ? <p style={{ color: '#00adef' }}>{`¥ ${Math.round(element[2] * 0.8)} (¥ ${Math.round(element[2] * 1.1 * 0.8)}税込)`}</p>
+          {element[5] === 'True' ? <p style={{ color: '#00adef' }}>{`¥ ${Math.round(element[2] * 0.8)} (¥ ${Math.round(element[2] * 1.1 * 0.8)}税込)`}</p>
             : <p>{`¥ ${element[2]} (¥ ${Math.round(element[2] * 1.1)}税込)`}</p>}
         </div>
       ))}

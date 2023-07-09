@@ -135,15 +135,14 @@ def addProducts():
             print("\n")
             description = input("description:")
             print("\n")
-            size = random.choice(["S", "M", "L"])
-            print(f"size:{size}")
-            print("\n")
-            stock = input("stock:")
-            print("\n")
             sdgs = random.choice([True, False])
             print(f"sdgs:{sdgs}")
+            s=input("s:")
+            m=input("m:")
+            l=input("l:")
+
             conn.execute(
-                f"INSERT INTO PRODUCTS (id,name, price, image, description,size, stock, sdgs) VALUES('{id}','{name}','{price}','{image}','{description}','{size}','{stock}','{sdgs}')"
+                f"INSERT INTO PRODUCTS (id,name, price, image, description, sdgs, s, m, l) VALUES('{id}','{name}','{price}','{image}','{description}','{sdgs}','{s}','{m}','{l}')"
             )
             result = conn.execute(f"SELECT * FROM PRODUCTS").fetchall()
             print(result)
@@ -151,6 +150,30 @@ def addProducts():
             #move to addeed_image
             os.rename(product, f"/Users/masataka/Coding/React/imse/public/added_image/{image}")
 
+
+
+def alterColumn():
+    with sqlite3.connect(f"{path}/products.db") as conn:
+        conn.execute("ALTER TABLE PRODUCTS DROP COULUMN")
+        # conn.execute("ALTER TABLE PRODUCTS ADD S STRING")
+        # conn.execute("ALTER TABLE PRODUCTS ADD M STRING")
+        # conn.execute("ALTER TABLE PRODUCTS ADD L STRING")
+
+
+def addStock():
+    with sqlite3.connect(f"{path}/products.db") as conn:
+        # 上の行から順にs,m,lの値をランダムに挿入する
+        products = conn.execute("SELECT * FROM PRODUCTS").fetchall()
+        for product in products:
+            s = random.randint(0, 10)
+            m = random.randint(0, 10)
+            l = random.randint(0, 10)
+            conn.execute(
+                f"UPDATE PRODUCTS SET s='{s}', m='{m}', l='{l}' WHERE id='{product[0]}'"
+            )
+            result = conn.execute(f"SELECT * FROM PRODUCTS").fetchall()
+            print(result)
+            print("Added!")
 
 
 if __name__ == "__main__":
@@ -174,3 +197,5 @@ if __name__ == "__main__":
     # createCARTDB()
     # createREVIEWSDB()
     # addProducts()
+    # alterColumn()
+    # addStock()
