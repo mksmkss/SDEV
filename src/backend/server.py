@@ -40,7 +40,11 @@ def login():
                 f"SELECT name FROM USERS WHERE email=? AND password=?",
                 (email, password),
             ).fetchall()
-            return make_response(jsonify({"status": "success", "name": name}))
+            userId = conn.execute(
+                f"SELECT id FROM USERS WHERE email=? AND password=?",
+                (email, password),
+            ).fetchall()
+            return make_response(jsonify({"status": "success", "name": name[0][0], "userId": userId[0][0]}))
 
 
 @app.route("/api/signup", methods=["POST"])
@@ -61,7 +65,7 @@ def signup():
                 f"INSERT INTO USERS (id,name,email,password) VALUES('{id}','{name}','{email}','{password}')"
             )
             result = conn.execute(f"SELECT * FROM USERS").fetchall()
-            return make_response(jsonify({"status": "success"}))
+            return make_response(jsonify({"status": "success", "userId": id}))
         else:
             return make_response(jsonify({"status": "failed"}))
 
@@ -89,6 +93,22 @@ def getProductDetail(productUuid):
         print(result)
         return make_response(jsonify({"status": "success", "product": result}))
 
+
+@app.route("/api/addCart", methods=["POST"])
+def addCart():
+    data = request.get_json()
+    print(data)
+    productId = data["productUuid"]
+    userId = data["userUuid"]
+    size = data["size"]
+    with sqlite3.connect(f"{path}/cart.db") as conn:
+        conn.execute(
+            f"INSERT INTO CART (userid,productid,size) VALUES('{userId}','{productId}','{size}')"
+        )
+        result = conn.execute(f"SELECT * FROM CART").fetchall()
+        print(result)
+        return make_response(jsonify({"status": "success"}))
+        
 
 def createUSERDB():
     # データベースファイルの作成
@@ -149,7 +169,6 @@ def addProducts():
             print("Added!")
             #move to addeed_image
             os.rename(product, f"/Users/masataka/Coding/React/imse/public/added_image/{image}")
-
 
 
 def alterColumn():

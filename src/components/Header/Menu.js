@@ -9,7 +9,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
-import Settings from '@mui/icons-material/Settings';
+// import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -47,6 +47,7 @@ function LogoutedItems({ pressedLogin, pressedSignup }) {
   );
 }
 
+// eslint-disable-next-line no-unused-vars
 function LoginedItems({ pressedProfile, pressedSettings, pressedLogout }) {
   return (
     <div>
@@ -57,12 +58,12 @@ function LoginedItems({ pressedProfile, pressedSettings, pressedLogout }) {
         Profile
       </MenuItem>
       <Divider />
-      <MenuItem onClick={pressedSettings}>
+      {/* <MenuItem onClick={pressedSettings}>
         <ListItemIcon>
           <Settings fontSize="small" />
         </ListItemIcon>
         Settings
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem onClick={pressedLogout}>
         <ListItemIcon>
           <Logout fontSize="small" />

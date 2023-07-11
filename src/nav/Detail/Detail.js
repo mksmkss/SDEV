@@ -1,9 +1,12 @@
 /* eslint-disable react/button-has-type */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { Alert, Button, Snackbar } from '@mui/material';
 import Header from '../../components/Header/Header';
 import server from '../../backend/server_url.json';
 import Color from '../../components/config/Color';
+import { isLogin, auth } from '../../components/config/user';
 
 const styles = {
   container: {
@@ -42,13 +45,13 @@ const styles = {
     flexDirection: 'column',
     borderRadius: '10px',
     backgroundColor: Color.white1,
-    padding: '10px',
+    paddingLeft: '20px',
+    paddingRight: '20px',
+    paddingTop: '10px',
   },
   title: {
     display: 'flex',
     height: '30px',
-    marginLeft: '10px',
-    // backgroundColor: Color.replyblue2,
     justifyContent: 'left',
     alignItems: 'center',
   },
@@ -56,16 +59,90 @@ const styles = {
     display: 'flex',
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
+    paddingLeft: '5px',
+    paddingRight: '5px',
+    maxWidth: '100px',
     color: Color.white1,
     borderRadius: '15px',
     height: '30px',
     margin: '5px',
-    width: '100px',
+  },
+  cartAddContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flex: 1,
+    width: '100%',
+  },
+  addCartButton: {
+    flex: 1,
+    color: Color.white1,
+    borderRadius: '10px',
+    height: '50px',
+    width: '100%',
+    fontSize: '20px',
+    fontWeight: 'bold',
   },
 };
 
-const stockContent = (s, m, l) => {
+function cartAddButton(product, chipData, setOpenWarning) {
+  const isLoginValue = useContext(isLogin);
+  const onPressed = () => {
+    const { url } = server;
+    const { userId } = JSON.parse(sessionStorage.getItem('user'));
+    if (isLoginValue.login) {
+      const addCart = async () => {
+        try {
+          const response = await fetch(`http://${url}:8000/api/addCart`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              productUuid: product[0],
+              userUuid: userId,
+              size: chipData,
+            }),
+          });
+          const data = await response.json();
+          if (response.ok) {
+            console.log('addCart:', data);
+          } else {
+            console.error('Failed to fetch addCart:', data.status);
+          }
+        } catch (error) {
+          console.error('Error while fetching addCart:', error);
+        }
+      };
+      addCart();
+    } else {
+      setOpenWarning(true);
+    }
+  };
+  return (
+    <div style={{
+      display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, width: '100%',
+    }}
+    >
+      <Button
+        style={{
+          ...styles.addCartButton,
+          backgroundColor: chipData === '' ? Color.replyblue4 : Color.replyblue3,
+        }}
+        variant="contained"
+        endIcon={<AddShoppingCartIcon />}
+        disabled={chipData === ''}
+        onClick={onPressed}
+      >
+        カートに追加
+      </Button>
+    </div>
+  );
+}
+
+const stockContent = (s, m, l, chipData, setChipData) => {
   const contents = [
     {
       size: 'S',
@@ -81,80 +158,77 @@ const stockContent = (s, m, l) => {
     },
   ];
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{
+      display: 'flex', width: '100%', justifyContent: 'space-evenly', height: '90%',
+    }}
+    >
       {contents.map((content) => (
-        <div
-          className="sizeContent"
+        <Button
           style={{
             ...styles.sizeContent,
-            backgroundColor: content.stock === 0 ? Color.replyblue4 : Color.replyblue3,
+            backgroundColor: content.stock === 0 || content.size !== chipData ? Color.replyblue4 : Color.replyblue3,
           }}
+          onClick={() => {
+            if (content.size === chipData) {
+              setChipData('');
+            } else {
+              setChipData(content.size);
+            }
+          }}
+          disabled={content.stock === 0}
+          variant="contained"
         >
-          <div className="title" style={{ fontWeight: 'bold', fontSize: '20px', marginRight: '20px' }}>
+          <div className="title" style={{ fontWeight: 'bold', fontSize: '20px' }}>
             {content.size}
           </div>
           <div className="stock" style={{ fontSize: '20px' }}>
             {content.stock}
           </div>
-        </div>
+        </Button>
       ))}
     </div>
   );
 };
 
-const cartAddButton = () => (
-  <div style={{
-    display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1,
-  }}
-  >
-    <button
-      className="cartAddButton"
-      style={{
-        backgroundColor: Color.replyblue3,
-        color: Color.white1,
-        borderRadius: '10px',
-        height: '50px',
-        width: '100%',
-        fontSize: '20px',
-        fontWeight: 'bold',
-      }}
-    >
-      カートに追加
-    </button>
-  </div>
-);
-
-const rightContents = ({ product }) => {
+const rightContents = (product, chipData, setChipData, setOpenWarning) => {
   const contents = [
     {
       title: '商品説明',
       content:
   <div style={{ textAlign: 'left' }}>{product[4]}</div>,
-      flex: 2,
+      flex: 1,
       marginBottom: '20px',
     },
     {
       title: '価格',
       content:
   <div>
-    {product[5] === 'True' ? <p style={{ color: '#00adef' }}>{`¥ ${Math.round(product[2] * 0.8)} (¥ ${Math.round(product[2] * 1.1 * 0.8)}税込)`}</p>
-      : <p>{`¥ ${product[2]} (¥ ${Math.round(product[2] * 1.1)}税込)`}</p>}
+    {product[5] === 'True' ? <p style={{ color: '#00adef', fontSize: '18px' }}>{`¥ ${Math.round(product[2] * 0.8)} (¥ ${Math.round(product[2] * 1.1 * 0.8)}税込)`}</p>
+      : <p style={{ fontSize: '18px' }}>{`¥ ${product[2]} (¥ ${Math.round(product[2] * 1.1)}税込)`}</p>}
   </div>,
       flex: 1,
       marginBottom: '20px',
     },
     {
-      title: '在庫',
+      title: 'サイズ',
       content:
-  <div>
+  <div style={{
+    width: '100%', flexDirection: 'column', alignSelf: 'flex-start',
+  }}
+  >
+    <div style={{ height: '10%' }}>
+      <h5 style={{ color: Color.gray2 }}>サイズを選択してください</h5>
+    </div>
     {stockContent(
       product[6],
       product[7],
       product[8],
+      chipData,
+      setChipData,
     )}
   </div>,
       flex: 1,
-      marginBottom: '0px',
+      marginBottom: '20px',
     },
   ];
   return (
@@ -172,7 +246,7 @@ const rightContents = ({ product }) => {
           </div>
         </div>
       ))}
-      {cartAddButton()}
+      {cartAddButton(product, chipData, setOpenWarning)}
     </div>
   );
 };
@@ -181,7 +255,15 @@ function Detail() {
   const { uuid: productUuid } = useParams();
   const [drawer, setDrawer] = useState(false);
   const [product, setProduct] = useState([]);
+  const [chipData, setChipData] = useState('');
+  const [openWarning, setOpenWarning] = useState(false);
   const { url } = server;
+  const handleWarningClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenWarning(false);
+  };
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -215,8 +297,13 @@ function Detail() {
         <div className="leftContent" style={styles.leftContent}>
           <img src={`http://${url}:3000/added_image/${product[3]}`} alt="sdgs" />
         </div>
-        {rightContents({ product })}
+        {rightContents(product, chipData, setChipData, setOpenWarning)}
       </div>
+      <Snackbar open={openWarning} autoHideDuration={6000} onClose={handleWarningClose}>
+        <Alert onClose={handleWarningClose} severity="warning" sx={{ width: '100%' }}>
+          ログインまたはサインアップしてください
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

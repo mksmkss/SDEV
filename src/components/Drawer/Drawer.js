@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
-import SettingsIcon from '@mui/icons-material/Settings';
+// import SettingsIcon from '@mui/icons-material/Settings';
 import Color from '../config/Color';
 
 const styles = {
@@ -33,11 +33,11 @@ const menuContents = {
     path: '/search',
     icon: <SearchIcon style={styles.icon} />,
   },
-  settings: {
-    name: 'Settings',
-    path: '/settings',
-    icon: <SettingsIcon style={styles.icon} />,
-  },
+  // settings: {
+  //   name: 'Settings',
+  //   path: '/settings',
+  //   icon: <SettingsIcon style={styles.icon} />,
+  // },
 };
 
 function DrawerComponent(props) {

@@ -16,7 +16,7 @@ function App() {
 // sessionStorageにisLoginValueがあるなら取得，ないならfalse
   const isLoginValue = sessionStorage.getItem('isLogin') === 'true';
   const [login, setLogin] = React.useState(isLoginValue);
-  const [user, setUser] = React.useState({ name: '' });
+  const [user, setUser] = React.useState({ name: '', userID: '' });
   const providerIsLoginValue = React.useMemo(() => ({ login, setLogin }), [login, setLogin]);
   const providerAuthValue = React.useMemo(() => ({ user, setUser }), [user, setUser]);
 
