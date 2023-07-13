@@ -11,6 +11,7 @@ import Cart from './nav/Cart/Cart';
 import Search from './nav/Search/Search';
 import Settings from './nav/Settings/Settings';
 import Detail from './nav/Detail/Detail';
+import Purchase from './nav/Purchase/Purchase';
 
 function Routers() {
   return (
@@ -25,7 +26,7 @@ function Routers() {
         <Route path="search" element={<Search />} />
         <Route path="settings" element={<Settings />} />
         <Route path="detail/:uuid" element={<Detail />} />
-        {/* <Route path="detail" element={<Detail />} /> */}
+        <Route path="purchase" element={<Purchase />} />
       </Routes>
     </BrowserRouter>
   );

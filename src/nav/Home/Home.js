@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import server from '../../backend/server_url.json';
 import SimpleSlider from './Slider';
+import Header from '../../components/Header/Header';
 
 const styles = {
   home: {

@@ -18,6 +18,7 @@ const styles = {
     flex: 6,
     display: 'flex',
     justifyContent: 'center',
+    cursor: 'pointer',
   },
   left_container: {
     flex: 2,

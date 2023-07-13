@@ -1,12 +1,14 @@
 /* eslint-disable react/button-has-type */
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { Alert, Button, Snackbar } from '@mui/material';
+import {
+  Alert, Button, IconButton, Snackbar, Tooltip, Fade,
+} from '@mui/material';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import Header from '../../components/Header/Header';
 import server from '../../backend/server_url.json';
 import Color from '../../components/config/Color';
-import { isLogin, auth } from '../../components/config/user';
 
 const styles = {
   container: {
@@ -85,14 +87,27 @@ const styles = {
     fontSize: '20px',
     fontWeight: 'bold',
   },
+  sdgsTag: {
+    position: 'absolute',
+    top: '120px',
+    left: '40px',
+    backgroundColor: '#00adef',
+    color: Color.white1,
+    borderRadius: '5px',
+    padding: '5px',
+    paddingLeft: '10px',
+    paddingRight: '10px',
+    fontSize: '20px',
+    fontWeight: 'bold',
+  },
 };
 
-function cartAddButton(product, chipData, setOpenWarning) {
-  const isLoginValue = useContext(isLogin);
+function cartAddButton(product, chipData, setOpenWarning, setOpenSuccess) {
+  const isLogin = sessionStorage.getItem('isLogin');
   const onPressed = () => {
     const { url } = server;
     const { userId } = JSON.parse(sessionStorage.getItem('user'));
-    if (isLoginValue.login) {
+    if (isLogin === 'true') {
       const addCart = async () => {
         try {
           const response = await fetch(`http://${url}:8000/api/addCart`, {
@@ -117,6 +132,7 @@ function cartAddButton(product, chipData, setOpenWarning) {
         }
       };
       addCart();
+      setOpenSuccess(true);
     } else {
       setOpenWarning(true);
     }
@@ -190,22 +206,40 @@ const stockContent = (s, m, l, chipData, setChipData) => {
   );
 };
 
-const rightContents = (product, chipData, setChipData, setOpenWarning) => {
+const priceContent = (product) => (
+  <div style={{
+    display: 'flex', width: '100%', justifyContent: 'space-evenly', alignItems: 'center',
+  }}
+  >
+    <div>
+      {product[5] === 'True' ? <h3 style={{ color: '#00adef', fontSize: '18px' }}>{`¥ ${Math.round(product[2] * 0.8)} (¥ ${Math.round(product[2] * 1.1 * 0.8)}税込)`}</h3>
+        : <h3 style={{ fontSize: '18px' }}>{`¥ ${product[2]} (¥ ${Math.round(product[2] * 1.1)}税込)`}</h3>}
+    </div>
+  </div>
+);
+
+const rightContents = (product, chipData, setChipData, setOpenWarning, setOpenSuccess) => {
   const contents = [
+    {
+      title: '商品名',
+      content:
+  <div style={{ textAlign: 'left' }}>
+    <h2>{product[1]}</h2>
+  </div>,
+      flex: 1,
+      marginBottom: '20px',
+    },
     {
       title: '商品説明',
       content:
   <div style={{ textAlign: 'left' }}>{product[4]}</div>,
-      flex: 1,
+      flex: 2,
       marginBottom: '20px',
     },
     {
       title: '価格',
       content:
-  <div>
-    {product[5] === 'True' ? <p style={{ color: '#00adef', fontSize: '18px' }}>{`¥ ${Math.round(product[2] * 0.8)} (¥ ${Math.round(product[2] * 1.1 * 0.8)}税込)`}</p>
-      : <p style={{ fontSize: '18px' }}>{`¥ ${product[2]} (¥ ${Math.round(product[2] * 1.1)}税込)`}</p>}
-  </div>,
+  <>{ priceContent(product)}</>,
       flex: 1,
       marginBottom: '20px',
     },
@@ -227,7 +261,7 @@ const rightContents = (product, chipData, setChipData, setOpenWarning) => {
       setChipData,
     )}
   </div>,
-      flex: 1,
+      flex: 2,
       marginBottom: '20px',
     },
   ];
@@ -237,6 +271,22 @@ const rightContents = (product, chipData, setChipData, setOpenWarning) => {
         <div className="content" style={{ ...styles.content, flex: content.flex, marginBottom: content.marginBottom }}>
           <div className="title" style={styles.title}>
             <h5 style={{ color: Color.gray2 }}>{content.title}</h5>
+            {content.title === '価格' && product[5] === 'True' && (
+              <Tooltip
+                title="SDGsタグの付いている商品はお得な価格で在庫限りの特別販売中です"
+                placement="top-start"
+                arrow
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 600 }}
+              >
+                <IconButton
+                  color="primary"
+                  aria-label="HelpOutline"
+                >
+                  <HelpOutlineIcon />
+                </IconButton>
+              </Tooltip>
+            )}
           </div>
           <div style={{
             alignItems: 'center', justifyContent: 'center', display: 'flex', height: '100%',
@@ -246,7 +296,7 @@ const rightContents = (product, chipData, setChipData, setOpenWarning) => {
           </div>
         </div>
       ))}
-      {cartAddButton(product, chipData, setOpenWarning)}
+      {cartAddButton(product, chipData, setOpenWarning, setOpenSuccess)}
     </div>
   );
 };
@@ -256,8 +306,15 @@ function Detail() {
   const [drawer, setDrawer] = useState(false);
   const [product, setProduct] = useState([]);
   const [chipData, setChipData] = useState('');
+  const [openSuccess, setOpenSuccess] = useState(false);
   const [openWarning, setOpenWarning] = useState(false);
   const { url } = server;
+  const handleSuccessClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSuccess(false);
+  };
   const handleWarningClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -294,11 +351,17 @@ function Detail() {
         setDrawer={setDrawer}
       />
       <div className="detail" style={styles.detail}>
+        {product[5] === 'True' ? <div style={styles.sdgsTag}>SDGs</div> : <div className="sdgsNull" />}
         <div className="leftContent" style={styles.leftContent}>
           <img src={`http://${url}:3000/added_image/${product[3]}`} alt="sdgs" />
         </div>
-        {rightContents(product, chipData, setChipData, setOpenWarning)}
+        {rightContents(product, chipData, setChipData, setOpenWarning, setOpenSuccess)}
       </div>
+      <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleSuccessClose}>
+        <Alert onClose={handleSuccessClose} severity="success" sx={{ width: '100%' }}>
+          カートに追加しました
+        </Alert>
+      </Snackbar>
       <Snackbar open={openWarning} autoHideDuration={6000} onClose={handleWarningClose}>
         <Alert onClose={handleWarningClose} severity="warning" sx={{ width: '100%' }}>
           ログインまたはサインアップしてください

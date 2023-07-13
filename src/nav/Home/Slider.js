@@ -2,6 +2,7 @@
 import React from 'react';
 import Slider from 'react-slick';
 import { useNavigate } from 'react-router-dom';
+import { Paper } from '@mui/material';
 import server from '../../backend/server_url.json';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -44,8 +45,8 @@ export default function SimpleSlider(props) {
     // eslint-disable-next-line react/jsx-props-no-spreading
     <Slider {...settings}>
       {elements.map((element) => (
-        <div
-          className="card"
+        <Paper
+          sx={{ borderRadius: '10px' }}
           key={element[0]}
           onClick={() => navigate(`/detail/${element[0]}`)}
           onKeyDown={(e) => {
@@ -62,7 +63,7 @@ export default function SimpleSlider(props) {
           <div className="productName">{element[1]}</div>
           {element[5] === 'True' ? <p style={{ color: '#00adef' }}>{`¥ ${Math.round(element[2] * 0.8)} (¥ ${Math.round(element[2] * 1.1 * 0.8)}税込)`}</p>
             : <p>{`¥ ${element[2]} (¥ ${Math.round(element[2] * 1.1)}税込)`}</p>}
-        </div>
+        </Paper>
       ))}
     </Slider>
   );

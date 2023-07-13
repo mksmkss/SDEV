@@ -98,17 +98,57 @@ def getProductDetail(productUuid):
 def addCart():
     data = request.get_json()
     print(data)
+    cartId = uuid.uuid4()
     productId = data["productUuid"]
     userId = data["userUuid"]
     size = data["size"]
     with sqlite3.connect(f"{path}/cart.db") as conn:
         conn.execute(
-            f"INSERT INTO CART (userid,productid,size) VALUES('{userId}','{productId}','{size}')"
+            f"INSERT INTO CART (cartid,userid,productid,size) VALUES('{cartId}','{userId}','{productId}','{size}')"
         )
         result = conn.execute(f"SELECT * FROM CART").fetchall()
         print(result)
         return make_response(jsonify({"status": "success"}))
         
+
+@app.route("/api/getCart/<userUuid>", methods=["GET"])
+def getCart(userUuid):
+    result = []
+    size = []
+    with sqlite3.connect(f"{path}/cart.db") as conn:
+        result = conn.execute(f"SELECT * FROM CART WHERE userid=?", (userUuid,)).fetchall()
+        # print(result)
+        size = conn.execute(f"SELECT size FROM CART WHERE userid=?", (userUuid,)).fetchall()
+        size =[i[0] for i in size]
+        cartId = conn.execute(f"SELECT cartid FROM CART WHERE userid=?", (userUuid,)).fetchall()
+        cartId =[i[0] for i in cartId]
+        print(size)
+    with sqlite3.connect(f"{path}/products.db") as conn:
+        for i,d in enumerate(result):
+            product = conn.execute(f"SELECT * FROM PRODUCTS WHERE id=?", (d[2],)).fetchall()
+            result[i] = list(product[0])
+            result[i].append(cartId[i])
+            size[i] = size[i].split(",")
+            result[i].append(size[i])
+            print(result[i])
+        print(result)
+        return make_response(jsonify({"status": "success", "products": result, "size" : size}))
+
+
+@app.route("/api/deleteCart/<cartId>", methods=["DELETE"])
+def deleteCart(cartId):
+    with sqlite3.connect(f"{path}/cart.db") as conn:
+        conn.execute(f"DELETE FROM CART WHERE cartid=?", (cartId,))
+        result = conn.execute(f"SELECT * FROM CART").fetchall()
+        print(result)
+        return make_response(jsonify({"status": "success"}))
+
+
+# @app.route("/api/purchase", methods=["POST"])
+# def purchase():
+#     data = request.get_json()
+                                                                            
+
 
 def createUSERDB():
     # データベースファイルの作成
@@ -130,7 +170,7 @@ def createCARTDB():
     # データベースファイルの作成
     with sqlite3.connect(f"{path}/cart.db") as conn:
         conn.execute(
-            "CREATE TABLE IF NOT EXISTS CART (userid INTEGER, productid INTEGER)"
+            "CREATE TABLE IF NOT EXISTS CART (cartid INTEGER, userid INTEGER, productid INTEGER, size STRING)"
         )
 
 
@@ -205,7 +245,7 @@ if __name__ == "__main__":
         ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
         に変更してください
     """
-    ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
+    ip = socket.gethostbyname_ex(socket.gethostname())[2][1]
     print(ip)
     with open("server_url.json", "w") as f:
         f.write(f'{{"url":"{ip}"}}')
