@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Routers from './Routers';
 import { isLogin, auth } from './components/config/user';
 
@@ -12,11 +12,19 @@ const styles = {
 };
 
 function App() {
-// useMemoを使うことで、コンポーネントの再レンダリングを防ぐことができる
-// sessionStorageにisLoginValueがあるなら取得，ないならfalse
-  const isLoginValue = sessionStorage.getItem('isLogin') === 'true';
+  const [isLoginValue, setIsLoginValue] = React.useState(false);
+  useEffect(() => {
+    console.log('App.js:', sessionStorage.getItem('isLogin'));
+    if (sessionStorage.getItem('isLogin') === null || sessionStorage.getItem('isLogin') === 'false') {
+      sessionStorage.setItem('isLogin', false);
+    } else {
+      sessionStorage.setItem('isLogin', true);
+      setIsLoginValue(true);
+    }
+  }, []);
   const [login, setLogin] = React.useState(isLoginValue);
   const [user, setUser] = React.useState({ name: '', userID: '' });
+  // useMemoを使うことで、コンポーネントの再レンダリングを防ぐことができる
   const providerIsLoginValue = React.useMemo(() => ({ login, setLogin }), [login, setLogin]);
   const providerAuthValue = React.useMemo(() => ({ user, setUser }), [user, setUser]);
 

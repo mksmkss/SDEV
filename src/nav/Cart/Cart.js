@@ -51,7 +51,6 @@ const styles = {
     alignItems: 'center',
   },
   purchaseButton: {
-    backgroundColor: Color.replyblue2,
     color: 'white',
     fontSize: '20px',
     borderRadius: '10px',
@@ -89,7 +88,14 @@ function cartContent(products, setProducts) {
 
   return (
     <Grid container spacing={2} style={styles.contents} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-      {products.length === 0 ? <h2>カートに商品がありません</h2> : null}
+      {products.length === 0 ? (
+        <div style={{
+          display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', alignSelf: 'center',
+        }}
+        >
+          <h2>カートに商品がありません</h2>
+        </div>
+      ) : null}
       {products.map((product) => (
         <Grid item xs={6} key={product.id}>
           <Paper style={styles.content}>
@@ -163,10 +169,14 @@ function Cart() {
       >
         <Button
           variant="contained"
-          style={styles.purchaseButton}
+          style={{
+            ...styles.purchaseButton,
+            backgroundColor: products.length === 0 ? Color.replyblue4 : Color.replyblue3,
+          }}
           onClick={() => {
             navigate('/purchase');
           }}
+          disabled={products.length === 0}
         >
           購入手続きへ
         </Button>

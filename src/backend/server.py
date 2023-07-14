@@ -70,6 +70,14 @@ def signup():
             return make_response(jsonify({"status": "failed"}))
 
 
+@app.route("/api/getUser/<userUuid>", methods=["GET"])
+def getUser(userUuid):
+    with sqlite3.connect(f"{path}/users.db") as conn:
+        result = conn.execute(f"SELECT * FROM USERS WHERE id=?", (userUuid,)).fetchall()
+        print(result[0])
+        return make_response(jsonify({"status": "success", "user": result}))
+
+
 @app.route("/api/sdgsProducts", methods=["GET"])
 def getSdgsProducts():
     with sqlite3.connect(f"{path}/products.db") as conn:
@@ -115,6 +123,7 @@ def addCart():
 def getCart(userUuid):
     result = []
     size = []
+    price = 0
     with sqlite3.connect(f"{path}/cart.db") as conn:
         result = conn.execute(f"SELECT * FROM CART WHERE userid=?", (userUuid,)).fetchall()
         # print(result)
@@ -122,7 +131,6 @@ def getCart(userUuid):
         size =[i[0] for i in size]
         cartId = conn.execute(f"SELECT cartid FROM CART WHERE userid=?", (userUuid,)).fetchall()
         cartId =[i[0] for i in cartId]
-        print(size)
     with sqlite3.connect(f"{path}/products.db") as conn:
         for i,d in enumerate(result):
             product = conn.execute(f"SELECT * FROM PRODUCTS WHERE id=?", (d[2],)).fetchall()
@@ -131,8 +139,15 @@ def getCart(userUuid):
             size[i] = size[i].split(",")
             result[i].append(size[i])
             print(result[i])
+            # sdgsがtrueの場合はprice*0.8, falseの場合はpriceを加算
+            if result[i][5] == "True":
+                print(round(result[i][2]*0.88))
+                price += round(result[i][2]*0.88)
+            else:
+                print(round(result[i][2]*1.1))
+                price += round(result[i][2]*1.1)
         print(result)
-        return make_response(jsonify({"status": "success", "products": result, "size" : size}))
+        return make_response(jsonify({"status": "success", "products": result, "size" : size, "price": price}))
 
 
 @app.route("/api/deleteCart/<cartId>", methods=["DELETE"])
@@ -245,7 +260,7 @@ if __name__ == "__main__":
         ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
         に変更してください
     """
-    ip = socket.gethostbyname_ex(socket.gethostname())[2][1]
+    ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
     print(ip)
     with open("server_url.json", "w") as f:
         f.write(f'{{"url":"{ip}"}}')

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/button-has-type */
-import React, { useContext, useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // eslint-disable-line import/no-extraneous-dependencies
 import { IconButton } from '@mui/material';
@@ -9,7 +9,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
-// import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -75,7 +74,12 @@ function LoginedItems({ pressedProfile, pressedSettings, pressedLogout }) {
 }
 
 function MenuComponent() {
+  // const [isLoginValue, setIsLoginValue] = useState(sessionStorage.getItem('isLogin'));
+  // useEffect(() => {
+  //   setIsLoginValue(sessionStorage.getItem('isLogin'));
+  // }, [isLoginValue]);
   const isLoginValue = useContext(isLogin);
+  console.log(isLoginValue);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
@@ -116,9 +120,11 @@ function MenuComponent() {
 
   return (
     <div className="right" style={styles.right_container}>
-      <IconButton onClick={pressedCart}>
-        <ShoppingCartIcon style={styles.button} />
-      </IconButton>
+      {isLoginValue.login === true ? (
+        <IconButton onClick={pressedCart}>
+          <ShoppingCartIcon style={styles.button} />
+        </IconButton>
+      ) : null}
       <IconButton
         onClick={handleClick}
         sx={{ ml: 2 }}
