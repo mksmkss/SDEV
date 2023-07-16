@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Paper, TextField, Step, Stepper, Button, StepLabel,
+  Paper, TextField, Step, Stepper, Button, StepLabel, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel,
 } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
@@ -52,6 +52,7 @@ const styles = {
     height: window.innerHeight * 0.6,
     backgroundColor: Color.white1,
     borderRadius: '10px',
+    paddingTop: '25px',
   },
   textInput: {
     width: '80%',
@@ -59,19 +60,22 @@ const styles = {
   },
   purchaseButton: {
     color: 'white',
+    backgroundColor: Color.replyblue3,
     fontSize: '20px',
     borderRadius: '10px',
-    width: '25%',
+    width: '30%',
     height: '50px',
-    marginTop: '20px',
+    marginTop: '15px',
+  },
+  selectPurchaseWay: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: '30px',
   },
 };
 
-const inputAuth = (user, price, setActiveStep) => {
-  const [texts, setTexts] = useState(['', '', '', '']);
-  useEffect(() => {
-    setTexts(['', '', '', user[2]]);
-  }, [user]);
+const inputAuth = (setActiveStep, texts, setTexts) => {
   const contents = [
     {
       id: 'postal_code',
@@ -148,45 +152,78 @@ const inputAuth = (user, price, setActiveStep) => {
   );
 };
 
-const selectPurchaseWay = (user, price, setActiveStep) => {
-  const [purchaseWay, setPurchaseWay] = useState(0);
+const selectPurchaseWay = (url, user, price, setActiveStep, purchaseWay, setPurchaseWay, setPurchase) => {
   const contents = [
     {
       id: 'credit_card',
       title: 'クレジットカード',
-      icon: <CreditCardIcon style={{ fontSize: '30px' }} />,
+      icon: <CreditCardIcon style={{ fontSize: '30px', marginRight: '10px' }} />,
     },
     {
       id: 'atm',
       title: 'ATM',
-      icon: <AtmIcon style={{ fontSize: '30px' }} />,
+      icon: <AtmIcon style={{ fontSize: '30px', marginRight: '10px' }} />,
     },
     {
       id: 'cash_on_delivery',
       title: '代金引換',
-      icon: <LocalConvenienceStoreIcon style={{ fontSize: '30px' }} />,
+      icon: <LocalConvenienceStoreIcon style={{ fontSize: '30px', marginRight: '10px' }} />,
     },
   ];
+  const onPurchaseClick = async () => {
+    const response = await fetch(`http://${url}:8000/api/purchase`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userUuid: user,
+      }),
+    });
+    const data = await response.json();
+    if (response.ok) {
+      console.log('purchase', data);
+    } else {
+      console.error('Failed to fetch user:', data.status);
+    }
+    setActiveStep(2);
+    setPurchase(true);
+  };
+
   return (
-    <div>
-      {contents.map((content) => (
-        <div key={content.id}>
-          <Button
-            variant="contained"
-            onClick={() => {
-              setPurchaseWay(contents.findIndex((c) => c.id === content.id));
-              setActiveStep(2);
-            }}
-            style={styles.purchaseButton}
-          >
-            {content.icon}
-            {content.title}
-          </Button>
-        </div>
-      ))}
+    <div style={styles.selectPurchaseWay}>
+      <FormControl component="fieldset">
+        <FormLabel component="legend" id="label">支払い方法</FormLabel>
+        <RadioGroup
+          aria-labelledby="label"
+          name="purchaseWay"
+          value={purchaseWay}
+          onChange={(e) => setPurchaseWay(e.target.value)}
+        >
+          {contents.map((content) => (
+            <FormControlLabel
+              key={content.id}
+              value={contents.findIndex((c) => c.id === content.id)}
+              control={<Radio />}
+              label={(
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  {content.icon}
+                  {content.title}
+                </div>
+           )}
+            />
+          ))}
+        </RadioGroup>
+      </FormControl>
+      <div style={{ marginTop: '20px' }}>
+        <span style={{ fontSize: '20px' }}>合計金額: </span>
+        <span style={{ fontSize: '20px', color: Color.replyblue3 }}>{price}</span>
+        <span style={{ fontSize: '20px' }}>円</span>
+      </div>
       <Button
         variant="contained"
         style={styles.purchaseButton}
+        onClick={onPurchaseClick}
       >
         購入
       </Button>
@@ -194,13 +231,25 @@ const selectPurchaseWay = (user, price, setActiveStep) => {
   );
 };
 
+const purchaseComplete = () => (
+  <div style={{
+    display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '70px',
+  }}
+  >
+    <h2>購入完了</h2>
+    <h4>またのご利用をお待ちしております。</h4>
+  </div>
+);
+
 function Purchase() {
-  const [drawer, setDrawer] = useState(false);
   const [purchase, setPurchase] = useState(false);
-  const [user, setUser] = useState([]);
+  const [drawer, setDrawer] = useState(false);
+  const [user, setUser] = useState('');
   const [price, setPrice] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
+  const [purchaseWay, setPurchaseWay] = useState(0);
   const { userId } = JSON.parse(sessionStorage.getItem('user'));
+  const [texts, setTexts] = useState(['', '', '', '']);
   const { url } = server;
   useEffect(() => {
     const fetchUser = async () => {
@@ -213,7 +262,10 @@ function Purchase() {
         });
         const data = await response.json();
         if (response.ok) {
-          setUser(data.user[0]);
+          setUser(data.user[0][0]);
+          console.log('user', user);
+          setTexts(['', '', '', data.user[0][2]]);
+          console.log('texts', texts);
         } else {
           console.error('Failed to fetch user:', data.status);
         }
@@ -241,10 +293,6 @@ function Purchase() {
     fetchProducts();
     fetchUser();
   }, []);
-
-  const handleTogglePurchase = () => {
-    setPurchase(!purchase);
-  };
 
   return (
     <div style={styles.container}>
@@ -286,13 +334,11 @@ function Purchase() {
               <StepLabel>購入完了</StepLabel>
             </Step>
           </Stepper>
-          {activeStep === 0 && inputAuth(user, price, setActiveStep)}
-          {activeStep === 1 && selectPurchaseWay(user, price, setActiveStep)}
+          {activeStep === 0 && inputAuth(setActiveStep, texts, setTexts)}
+          {activeStep === 1 && selectPurchaseWay(url, user, price, setActiveStep, purchaseWay, setPurchaseWay, setPurchase)}
+          {activeStep === 2 && purchaseComplete()}
         </Paper>
       </div>
-      <button type="button" onClick={handleTogglePurchase}>
-        purchase
-      </button>
     </div>
   );
 }

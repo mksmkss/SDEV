@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/button-has-type */
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // eslint-disable-line import/no-extraneous-dependencies
 import { IconButton } from '@mui/material';
@@ -13,7 +13,7 @@ import Logout from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { isLogin } from '../config/user';
+// import { isLogin } from '../config/user';
 
 const styles = {
   button_continer: {
@@ -74,12 +74,13 @@ function LoginedItems({ pressedProfile, pressedSettings, pressedLogout }) {
 }
 
 function MenuComponent() {
-  // const [isLoginValue, setIsLoginValue] = useState(sessionStorage.getItem('isLogin'));
-  // useEffect(() => {
-  //   setIsLoginValue(sessionStorage.getItem('isLogin'));
-  // }, [isLoginValue]);
-  const isLoginValue = useContext(isLogin);
-  console.log(isLoginValue);
+  const [isLoginValue, setIsLoginValue] = useState(false);
+  useEffect(() => {
+    setIsLoginValue(Boolean(sessionStorage.getItem('isLogin')));
+    console.log(isLoginValue);
+  }, [isLoginValue]);
+  // const isLoginValue = useContext(isLogin);
+  // console.log(isLoginValue);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
@@ -106,8 +107,9 @@ function MenuComponent() {
 
   const pressedLogout = () => {
     // eslint-disable-next-line react/destructuring-assignment
-    isLoginValue.setLogin(false);
+    isLoginValue(false);
     sessionStorage.setItem('isLogin', false);
+    sessionStorage.removeItem('user');
     navigate('/');
   };
   const pressedLogin = () => {
@@ -120,7 +122,7 @@ function MenuComponent() {
 
   return (
     <div className="right" style={styles.right_container}>
-      {isLoginValue.login === true ? (
+      {isLoginValue === true ? (
         <IconButton onClick={pressedCart}>
           <ShoppingCartIcon style={styles.button} />
         </IconButton>
@@ -171,7 +173,7 @@ function MenuComponent() {
       >
         {
         // eslint-disable-next-line react/destructuring-assignment
-        isLoginValue.login ? (
+        isLoginValue ? (
           <LoginedItems
             pressedProfile={pressedProfile}
             pressedSettings={pressedSettings}

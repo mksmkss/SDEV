@@ -106,8 +106,8 @@ function cartAddButton(product, chipData, setOpenWarning, setOpenSuccess) {
   const isLogin = sessionStorage.getItem('isLogin');
   const onPressed = () => {
     const { url } = server;
-    const { userId } = JSON.parse(sessionStorage.getItem('user'));
     if (isLogin === 'true') {
+      const { userId } = JSON.parse(sessionStorage.getItem('user'));
       const addCart = async () => {
         try {
           const response = await fetch(`http://${url}:8000/api/addCart`, {
@@ -193,6 +193,7 @@ const stockContent = (s, m, l, chipData, setChipData) => {
           }}
           disabled={content.stock === 0}
           variant="contained"
+          key={content.size}
         >
           <div className="title" style={{ fontWeight: 'bold', fontSize: '20px' }}>
             {content.size}
@@ -268,7 +269,11 @@ const rightContents = (product, chipData, setChipData, setOpenWarning, setOpenSu
   return (
     <div className="rightContents" style={styles.rightContents}>
       {contents.map((content) => (
-        <div className="content" style={{ ...styles.content, flex: content.flex, marginBottom: content.marginBottom }}>
+        <div
+          className="content"
+          style={{ ...styles.content, flex: content.flex, marginBottom: content.marginBottom }}
+          key={content.title}
+        >
           <div className="title" style={styles.title}>
             <h5 style={{ color: Color.gray2 }}>{content.title}</h5>
             {content.title === '価格' && product[5] === 'True' && (

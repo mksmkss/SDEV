@@ -159,10 +159,32 @@ def deleteCart(cartId):
         return make_response(jsonify({"status": "success"}))
 
 
-# @app.route("/api/purchase", methods=["POST"])
-# def purchase():
-#     data = request.get_json()
-                                                                            
+@app.route("/api/purchase", methods=["POST"])
+def purchase():
+    result = []
+    data = request.get_json()
+    print(data)
+    with sqlite3.connect(f"{path}/cart.db") as conn:
+        result = conn.execute(f"SELECT * FROM CART WHERE userid=?", (data["userUuid"],)).fetchall()
+        print(f'result:{result}')
+        for i in result:
+            conn.execute(f"DELETE FROM CART WHERE cartid=?", (i[0],))
+        result = conn.execute(f"SELECT * FROM CART").fetchall()
+    with sqlite3.connect(f"{path}/products.db") as conn:
+        for i,d in enumerate(result):
+            print(f'i:{i},d:{d}')
+            # そのサイズの在庫を1減らす,在庫が0の場合は何もしない
+            stock = conn.execute(f"SELECT {d[3]} FROM PRODUCTS WHERE id='{d[2]}'").fetchall()
+            print(f'stock:{stock}')
+            if stock[0][0] <= 0:
+                print("stock<=0")
+                continue
+            else:
+                print("stock>0")
+                product = conn.execute(f"UPDATE PRODUCTS SET {d[3]}={d[3]}-1 WHERE id='{d[2]}'").fetchall()
+                print(product)
+        return make_response(jsonify({"status": "success", "products": result}))
+
 
 
 def createUSERDB():
