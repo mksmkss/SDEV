@@ -76,9 +76,11 @@ function LoginedItems({ pressedProfile, pressedSettings, pressedLogout }) {
 function MenuComponent() {
   const [isLoginValue, setIsLoginValue] = useState(false);
   useEffect(() => {
-    setIsLoginValue(Boolean(sessionStorage.getItem('isLogin')));
+    // setIsLoginValue(Boolean(sessionStorage.getItem('isLogin')));
+    setIsLoginValue(sessionStorage.getItem('isLogin'));
     console.log(isLoginValue);
-  }, [isLoginValue]);
+    console.log(typeof isLoginValue);
+  }, []);
   // const isLoginValue = useContext(isLogin);
   // console.log(isLoginValue);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -107,7 +109,7 @@ function MenuComponent() {
 
   const pressedLogout = () => {
     // eslint-disable-next-line react/destructuring-assignment
-    isLoginValue(false);
+    setIsLoginValue(false);
     sessionStorage.setItem('isLogin', false);
     sessionStorage.removeItem('user');
     navigate('/');
@@ -122,7 +124,7 @@ function MenuComponent() {
 
   return (
     <div className="right" style={styles.right_container}>
-      {isLoginValue === true ? (
+      {isLoginValue === 'true' ? (
         <IconButton onClick={pressedCart}>
           <ShoppingCartIcon style={styles.button} />
         </IconButton>
@@ -173,7 +175,7 @@ function MenuComponent() {
       >
         {
         // eslint-disable-next-line react/destructuring-assignment
-        isLoginValue ? (
+        isLoginValue === 'true' ? (
           <LoginedItems
             pressedProfile={pressedProfile}
             pressedSettings={pressedSettings}

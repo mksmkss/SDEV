@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Drawer, ListItem, List, ListItemButton, Divider,
+  Drawer, ListItem, List, ListItemButton, Divider, TextField, Button,
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
@@ -64,6 +64,7 @@ function DrawerComponent(props) {
             }}
           >
             {Object.keys(menuContents).map((key) => (
+              // eslint-disable-next-line react/jsx-key
               <div>
                 <ListItem key={key}>
                   {menuContents[key].icon}
@@ -81,6 +82,23 @@ function DrawerComponent(props) {
                   >
                     <h2 style={styles.text}>{menuContents[key].name}</h2>
                   </ListItemButton>
+                  {menuContents[key].name === 'Search' && (
+                    <div style={{ flex: 1 }}>
+                      <TextField
+                        id="outlined-basic"
+                        label="Search"
+                        variant="outlined"
+                        size="small"
+                        sx={{
+                          width: '100%',
+                          height: '100%',
+                          marginLeft: '10px',
+                          flex: 1,
+                        }}
+                      />
+                      <Button variant="contained">Search</Button>
+                    </div>
+                  )}
                 </ListItem>
                 {key !== 'settings' && <Divider />}
               </div>

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu'; // eslint-disable-line import/no-extraneous-dependencies
 import { IconButton } from '@mui/material';
@@ -79,8 +79,9 @@ const renderLeftDefault = (props) => {
 };
 
 function Header(props) {
+  const [drawer, setDrawer] = useState(false);
   const {
-    title = 'Mamazon', drawer, setDrawer, isLeft = true, leftElements = renderLeftDefault({ drawer, setDrawer }), isRight = true, rightElements = <MenuComponent />,
+    title = 'Mamazon', isLeft = true, leftElements = renderLeftDefault({ drawer, setDrawer }), isRight = true, rightElements = <MenuComponent />,
   } = props;
   const navigate = useNavigate();
   return (

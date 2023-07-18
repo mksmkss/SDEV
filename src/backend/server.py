@@ -92,6 +92,25 @@ def getRandomProducts():
         result = conn.execute("SELECT * FROM PRODUCTS ORDER BY RANDOM() LIMIT 4").fetchall()
         print(result)
         return make_response(jsonify({"status": "success", "products": result}))
+    
+
+@app.route("/api/getSearchProducts/<searchText>", methods=["GET"])
+def getSearchProducts(searchText):
+    with sqlite3.connect(f"{path}/products.db") as conn:
+        result = conn.execute(f"SELECT * FROM PRODUCTS WHERE name LIKE '%{searchText}%'").fetchall()
+        print(f"result:{result}")
+        for i,d in enumerate(result):
+            result[i] = list(d)
+            result[i].append("False")
+    with sqlite3.connect(f"{path}/products.db") as conn:
+        result_2 = conn.execute("SELECT * FROM PRODUCTS WHERE sdgs=? ORDER BY RANDOM() LIMIT 2",("True",)).fetchall()
+        # 各要素の最後にisAdd = Trueを追加
+        for i,d in enumerate(result_2):
+            result_2[i] = list(d)
+            result_2[i].append("True")
+        result_2.extend(result)
+        print(f"result_2:{result_2}")
+        return make_response(jsonify({"status": "success", "products": result_2}))
 
 
 @app.route("/api/getProductDetail/<productUuid>", methods=["GET"])

@@ -23,7 +23,7 @@ function Routers() {
         <Route path="editdb" element={<EditDB />} />
         <Route path="cart" element={<Cart />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="search" element={<Search />} />
+        <Route path="search/:word" element={<Search />} />
         <Route path="settings" element={<Settings />} />
         <Route path="detail/:uuid" element={<Detail />} />
         <Route path="purchase" element={<Purchase />} />
