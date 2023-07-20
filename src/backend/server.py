@@ -260,7 +260,7 @@ def addProducts():
         for product in products:
             id = uuid.uuid4()
             name = product.split("/")[-1].split("_")[0]
-            print(name)
+            print(product.split("/")[-1])
             price = input("price:")
             print("\n")
             image = product.split("/")[-1]
@@ -269,9 +269,9 @@ def addProducts():
             print("\n")
             sdgs = random.choice([True, False])
             print(f"sdgs:{sdgs}")
-            s=input("s:")
-            m=input("m:")
-            l=input("l:")
+            s = random.randint(0, 10)
+            m = random.randint(0, 10)
+            l = random.randint(0, 10)
 
             conn.execute(
                 f"INSERT INTO PRODUCTS (id,name, price, image, description, sdgs, s, m, l) VALUES('{id}','{name}','{price}','{image}','{description}','{sdgs}','{s}','{m}','{l}')"
