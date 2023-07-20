@@ -97,7 +97,8 @@ def getRandomProducts():
 @app.route("/api/getSearchProducts/<searchText>", methods=["GET"])
 def getSearchProducts(searchText):
     with sqlite3.connect(f"{path}/products.db") as conn:
-        result = conn.execute(f"SELECT * FROM PRODUCTS WHERE name LIKE '%{searchText}%'").fetchall()
+        # 検索は名前と商品説明から検索
+        result = conn.execute(f"SELECT * FROM PRODUCTS WHERE name LIKE '%{searchText}%' OR description LIKE '%{searchText}%'").fetchall()
         print(f"result:{result}")
         for i,d in enumerate(result):
             result[i] = list(d)

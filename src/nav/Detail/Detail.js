@@ -9,6 +9,7 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import Header from '../../components/Header/Header';
 import server from '../../backend/server_url.json';
 import Color from '../../components/config/Color';
+import BottomComponent from './BottomComponent';
 
 const styles = {
   container: {
@@ -21,6 +22,8 @@ const styles = {
     flex: 1,
     display: 'flex',
     justifyContent: 'center',
+    paddingRight: '20px',
+    paddingLeft: '20px',
   },
   leftContent: {
     flex: 2,
@@ -31,6 +34,7 @@ const styles = {
     borderRadius: '10px',
     margin: '20px',
     marginRight: '10px',
+    marginLeft: '0px',
     backgroundColor: Color.white1,
     padding: '10px',
   },
@@ -40,6 +44,7 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'space-between',
     margin: '20px',
+    marginRight: '0px',
     marginLeft: '10px',
   },
   content: {
@@ -362,6 +367,7 @@ function Detail() {
         </div>
         {rightContents(product, chipData, setChipData, setOpenWarning, setOpenSuccess)}
       </div>
+      <BottomComponent />
       <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleSuccessClose}>
         <Alert onClose={handleSuccessClose} severity="success" sx={{ width: '100%' }}>
           カートに追加しました

@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Drawer, ListItem, List, ListItemButton, Divider, TextField, Button,
+  Drawer, ListItem, List, ListItemButton, Divider, TextField, IconButton, InputAdornment,
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
@@ -20,29 +20,61 @@ const styles = {
   icon: {
     color: Color.white1,
   },
-};
-
-const menuContents = {
-  home: {
-    name: 'Home',
-    path: '/',
-    icon: <HomeIcon style={styles.icon} />,
+  searchField: {
+    transition: 'width 0.3s ease-in-out', // アニメーションの定義
+    '& .MuiInputBase-input': {
+      color: Color.white1, // 入力文字の色
+    },
+    '& label': {
+      color: Color.white1, // 通常時のラベル色
+    },
+    '& label.Mui-focused': {
+      color: Color.white1, // フォーカス時のラベル色
+    },
+    '& .MuiInput-underline:before': {
+      borderBottomColor: '#CCCCCC', // 通常時のボーダー色
+    },
+    '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+      borderBottomColor: Color.white1, // ホバー時のボーダー色
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: '#CCCCCC', // 通常時のボーダー色(アウトライン)
+      },
+      '&:hover fieldset': {
+        borderColor: Color.white1, // ホバー時のボーダー色(アウトライン)
+      },
+    },
   },
-  search: {
-    name: 'Search',
-    path: '/search',
-    icon: <SearchIcon style={styles.icon} />,
-  },
-  // settings: {
-  //   name: 'Settings',
-  //   path: '/settings',
-  //   icon: <SettingsIcon style={styles.icon} />,
-  // },
 };
 
 function DrawerComponent(props) {
   const { drawer, setDrawer } = props;
+  const [isSearch, setSearch] = useState(false);
+  const [searchWord, setSearchWord] = useState('');
   const navigate = useNavigate();
+  const menuContents = {
+    home: {
+      name: 'Home',
+      icon: <HomeIcon style={styles.icon} />,
+      onClick: () => {
+        navigate('/');
+        setDrawer(false);
+      },
+    },
+    search: {
+      name: 'Search',
+      icon: <SearchIcon style={styles.icon} />,
+      onClick: () => {
+        setSearch(!isSearch);
+      },
+    },
+    // settings: {
+    //   name: 'Settings',
+    //   path: '/settings',
+    //   icon: <SettingsIcon style={styles.icon} />,
+    // },
+  };
   return (
     <Drawer
       anchor="left"
@@ -61,12 +93,15 @@ function DrawerComponent(props) {
             sx={{
               width: '100%',
               marginLeft: '10px',
+              marginRight: '10px',
             }}
           >
             {Object.keys(menuContents).map((key) => (
               // eslint-disable-next-line react/jsx-key
               <div>
-                <ListItem key={key}>
+                <ListItem
+                  key={key}
+                >
                   {menuContents[key].icon}
                   <ListItemButton
                     sx={{
@@ -75,36 +110,57 @@ function DrawerComponent(props) {
                       display: 'flex',
                       justifyContent: 'flex-start',
                     }}
-                    onClick={() => {
-                      navigate(menuContents[key].path);
-                      setDrawer(false);
-                    }}
+                    onClick={menuContents[key].onClick}
                   >
                     <h2 style={styles.text}>{menuContents[key].name}</h2>
                   </ListItemButton>
-                  {menuContents[key].name === 'Search' && (
-                    <div style={{ flex: 1 }}>
-                      <TextField
-                        id="outlined-basic"
-                        label="Search"
-                        variant="outlined"
-                        size="small"
-                        sx={{
-                          width: '100%',
-                          height: '100%',
-                          marginLeft: '10px',
-                          flex: 1,
-                        }}
-                      />
-                      <Button variant="contained">Search</Button>
-                    </div>
-                  )}
                 </ListItem>
-                {key !== 'settings' && <Divider />}
+                {menuContents[key].name === 'Home' && <Divider />}
               </div>
             ))}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+            >
+              <TextField
+                label="検索"
+                variant="outlined"
+                color="primary"
+                value={searchWord}
+                onChange={(e) => setSearchWord(e.target.value)}
+                sx={{
+                  ...styles.searchField,
+                  width: isSearch ? '100%' : '0px',
+                  overflow: isSearch ? 'visible' : 'hidden',
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={
+                          () => {
+                            navigate(`/search/${searchWord}`);
+                            setSearch(false);
+                          }
+                        }
+                        disabled={searchWord === ''}
+                      >
+                        <SearchIcon sx={{ color: Color.white1 }} />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && searchWord !== '') {
+                    // Enter or Space で実行
+                    navigate(`/search/${searchWord}`);
+                    setSearch(false);
+                  }
+                }}
+              />
+            </div>
           </List>
-
         </div>
       </div>
     </Drawer>
