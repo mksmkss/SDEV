@@ -1,88 +1,54 @@
-import React, { useState } from 'react';
-import {
-  Container, TextField, Grid, Button, Paper,
-} from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
+import React from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import ChatBot from 'react-simple-chatbot';
+import Color from '../../components/config/Color';
 
-const styles = {
-  container: {
-    // height: '80vh',
-    width: '100%',
-    marginTop: '50px',
-    backgroundColor: 'red',
-  },
-};
-function ChatComponent() {
-  const [messages, setMessages] = useState([
-    { id: 1, content: 'こんにちは！', sender: 'user' },
-    { id: 2, content: 'はじめまして！', sender: 'bot' },
-  ]);
-
-  const [messageInput, setMessageInput] = useState('');
-
-  const handleSendMessage = () => {
-    if (messageInput.trim() !== '') {
-      const newMessage = {
-        id: messages.length + 1,
-        content: messageInput,
-        sender: 'user',
-      };
-      setMessages([...messages, newMessage]);
-      setMessageInput('');
-    }
-  };
+function ChatScreen() {
+  const steps = [
+    {
+      id: '1',
+      message: 'こんにちは！',
+      trigger: '2',
+    },
+    {
+      id: '2',
+      message: 'こちらでは，この商品について質問を受け付けています！どのようなことでも構いませんので，お気軽にご質問ください。',
+      trigger: '3',
+    },
+    {
+      id: '3',
+      user: true,
+      trigger: '4',
+    },
+    {
+      id: '4',
+      message: '質問を受け付けました！担当者に通知しましたので，しばらくお待ちください。',
+      trigger: '5',
+    },
+    {
+      id: '5',
+      user: true,
+    },
+  ];
 
   return (
-    <Container maxWidth="sm" style={styles.container}>
-      <Grid container spacing={0} style={{ height: '100%' }}>
-        <Grid item xs={12}>
-          <Paper style={{ padding: '10px', height: '70vh', overflow: 'auto' }}>
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                style={{
-                  textAlign: message.sender === 'user' ? 'right' : 'left',
-                  marginBottom: '10px',
-                }}
-              >
-                <div
-                  style={{
-                    backgroundColor: message.sender === 'user' ? '#DCF8C6' : '#E0E0E0',
-                    padding: '8px',
-                    borderRadius: '8px',
-                    display: 'inline-block',
-                  }}
-                >
-                  {message.content}
-                </div>
-              </div>
-            ))}
-          </Paper>
-        </Grid>
-        <Grid item xs={12} style={{ marginTop: '10px' }}>
-          <TextField
-            label="メッセージを入力"
-            fullWidth
-            value={messageInput}
-            onChange={(e) => setMessageInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleSendMessage();
-              }
-            }}
-          />
-          <Button
-            variant="contained"
-            endIcon={<SendIcon />}
-            onClick={handleSendMessage}
-            style={{ marginTop: '10px' }}
-          >
-            送信
-          </Button>
-        </Grid>
-      </Grid>
-    </Container>
+    <ChatBot
+      headerTitle="商品に関するお問い合わせ"
+      steps={steps}
+      recognitionEnable
+      recognitionLang="ja"
+      speechSynthesis={{ enable: true, lang: 'ja' }}
+      width="400px"
+      userStepsDelay={1000}
+      botStepsDelay={1000}
+      floating
+      floatingStyle={{
+        backgroundColor: Color.replyblue2,
+        right: '20px',
+        bottom: '20px',
+      }}
+    />
   );
 }
 
-export default ChatComponent;
+export default ChatScreen;

@@ -352,8 +352,9 @@ function Detail() {
         console.error('Error while fetching product:', error);
       }
     };
+    window.scrollTo(0, 0);
     fetchProduct();
-  }, []);
+  }, [productUuid, url]);
   return (
     <div className="container" style={styles.container}>
       <Header
@@ -361,7 +362,7 @@ function Detail() {
         setDrawer={setDrawer}
       />
       <div className="detail" style={styles.detail}>
-        {product[5] === 'True' ? <div style={styles.sdgsTag}>SDGs</div> : <div className="sdgsNull" />}
+        {product[5] === 'True' && <div style={styles.sdgsTag}>SDGs</div> }
         <div className="leftContent" style={styles.leftContent}>
           <img src={`http://${url}:3000/added_image/${product[3]}`} alt="sdgs" />
         </div>

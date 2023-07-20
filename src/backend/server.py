@@ -78,6 +78,22 @@ def getUser(userUuid):
         return make_response(jsonify({"status": "success", "user": result}))
 
 
+@app.route("/api/editUser", methods=["POST"])
+def editUser():
+    data = request.get_json()
+    text = data["auth"]
+    userId = text["userId"]
+    email = text["email"]  
+    name = text["name"]
+    print(userId, email, name)
+    with sqlite3.connect(f"{path}/users.db") as conn:
+        conn.execute(f"UPDATE USERS SET name='{name}', email='{email}' WHERE id='{userId}'")
+        result = conn.execute(f"SELECT * FROM USERS WHERE id='{userId}'").fetchall()
+        return make_response(jsonify({"status": "success"}))
+
+
+
+
 @app.route("/api/sdgsProducts", methods=["GET"])
 def getSdgsProducts():
     with sqlite3.connect(f"{path}/products.db") as conn:
@@ -137,7 +153,7 @@ def addCart():
         result = conn.execute(f"SELECT * FROM CART").fetchall()
         print(result)
         return make_response(jsonify({"status": "success"}))
-        
+
 
 @app.route("/api/getCart/<userUuid>", methods=["GET"])
 def getCart(userUuid):
@@ -206,7 +222,6 @@ def purchase():
         return make_response(jsonify({"status": "success", "products": result}))
 
 
-
 def createUSERDB():
     # データベースファイルの作成
     with sqlite3.connect(f"{path}/users.db") as conn:
@@ -266,6 +281,7 @@ def addProducts():
             print("Added!")
             #move to addeed_image
             os.rename(product, f"/Users/masataka/Coding/React/imse/public/added_image/{image}")
+
 
 
 def alterColumn():

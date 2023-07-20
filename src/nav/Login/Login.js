@@ -234,7 +234,6 @@ function ButtonContainer({
         : (
           <button type="button" onClick={login} style={styles.button}>Log in</button>
         )}
-
     </div>
   );
 }
